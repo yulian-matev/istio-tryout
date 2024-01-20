@@ -63,6 +63,7 @@ resource "aws_security_group" "k8s_sg" {
   name   = "K8S Ports"
   vpc_id = aws_vpc.some_custom_vpc.id
 
+  # http
   ingress {
     from_port   = 80
     to_port     = 80
@@ -70,13 +71,15 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Kubernetes API server (TCP)
   ingress {
     from_port   = 6443
     to_port     = 6443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
+  # 2379 etcd client communication; 2378 etcd server to server communication
   ingress {
     from_port   = 2379
     to_port     = 2380
@@ -84,6 +87,7 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # SSH
   ingress {
     from_port   = 22
     to_port     = 22
@@ -91,12 +95,15 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Kubelet API
   ingress {
     from_port   = 10250
     to_port     = 10250
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+
   ingress {
     from_port   = 30000
     to_port     = 32767
