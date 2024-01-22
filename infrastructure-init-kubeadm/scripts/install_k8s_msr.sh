@@ -9,6 +9,9 @@ export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${private_key}
 export AWS_DEFAULT_REGION=${region}
 
+# Step 1
+# https://hbayraktar.medium.com/how-to-install-kubernetes-cluster-on-ubuntu-22-04-step-by-step-guide-7dbf7e8f5f99
+
 apt-get update
 apt-get upgrade -y
 
@@ -78,8 +81,11 @@ cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
 
+sleep 120
+
+
 #Step :9 Install Kubernetes Network Plugin (master node)
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml > /root/calico-stat.txt 2>&1
 
 
 

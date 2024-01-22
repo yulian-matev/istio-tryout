@@ -95,6 +95,14 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+   # Calico networking (BGP)
+  ingress {
+    from_port   = 179
+    to_port     = 179
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Kubelet API
   ingress {
     from_port   = 10250
@@ -121,8 +129,8 @@ resource "aws_security_group" "k8s_sg" {
 
   # custom application
   ingress {
-    from_port   = 9011
-    to_port     = 9012
+    from_port   = 8000
+    to_port     = 9999
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
