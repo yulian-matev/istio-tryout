@@ -81,8 +81,8 @@ cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
 
-sleep 120
-
+sleep 240
+ 
 
 #Step :9 Install Kubernetes Network Plugin (master node)
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml > /root/calico-stat.txt 2>&1
