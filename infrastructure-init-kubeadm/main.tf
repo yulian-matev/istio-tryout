@@ -209,6 +209,8 @@ resource "aws_instance" "ec2_instance_msr" {
     private_key = var.secret_key
     region = var.region
     s3buckit_name = "k8s-${random_string.s3name.result}"
+    dbg_file="/root/dbg.txt"
+    iter=0
     })}")
 
     depends_on = [

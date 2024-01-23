@@ -68,6 +68,14 @@ apt-get install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
 
 
+# install helm
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor |  tee /usr/share/keyrings/helm.gpg > /dev/null
+apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+
+
 # Step 7: Initialize Kubernetes Cluster with Kubeadm (master node)
 kubeadm init | tee /root/kubeadm-init.txt >/dev/null 2>&1
 # produces:
@@ -80,9 +88,17 @@ cp -i /etc/kubernetes/admin.conf /root/.kube/config
 cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
+# Needed for consequent kubectl 
+export KUBECONFIG=/root/.kube/config
 
-sleep 240
- 
+# Debug
+for iter in {1..20}
+do
+  sleep 10
+  echo $iter >> ${dbg_file} 
+  date >> ${dbg_file} 
+  kubectl get pods -A >> ${dbg_file} 2>&1
+done
 
 #Step :9 Install Kubernetes Network Plugin (master node)
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml > /root/calico-stat.txt 2>&1
@@ -123,3 +139,15 @@ kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/
 
 
 # minikube start --nodes 2 | tee ~/minikube-start.txt 
+
+
+
+# install nginx ingress 
+# helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+# helm install ingress --namespace ingress --create-namespace --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=ClusterIP,controller.hostNetwork=true ingress-nginx/ingress-nginx
+
+
+
+
+
+
