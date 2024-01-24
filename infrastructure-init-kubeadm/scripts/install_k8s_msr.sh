@@ -34,14 +34,18 @@ net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
 EOF
 
-# reload the changes
+# reload system changes
 sysctl --system
 
 
 # Step 4: Install Containerd Runtime (all nodes)
-apt-get install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
+apt-get install -y curl \
+                   gnupg2 \
+                   software-properties-common \
+                   apt-transport-https \
+                   ca-certificates
 
-# Enable the Docker repository
+# Enable Docker repository
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
@@ -52,7 +56,7 @@ apt-get install -y containerd.io
 containerd config default | tee /etc/containerd/config.toml >/dev/null 2>&1
 sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
 
-# Restart and enable the containerd service
+# Restart and enable 'containerd' service
 systemctl restart containerd
 systemctl enable containerd
 
@@ -64,9 +68,13 @@ apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
 
 # Step 6: Install Kubectl, Kubeadm, and Kubelet (all nodes)
 apt-get update
-apt-get install -y kubelet kubeadm kubectl
+apt-get install -y kubelet \
+                   kubeadm \
+                   kubectl
 apt-mark hold kubelet kubeadm kubectl
 
+# install aws 
+apt-get install -y awscli 
 
 # install helm
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor |  tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -82,6 +90,10 @@ kubeadm init | tee /root/kubeadm-init.txt >/dev/null 2>&1
 #         kubeadm join 10.0.1.252:6443 --token advry3.80up3qdkntl7bmo4 \
 #           --discovery-token-ca-cert-hash sha256:27036884e6e0eae4ba32fc85df546096ee34af7d26e62170b2b6064fb6064a52
 
+# save "k8s join" command to S3 bucket
+tail -2 /root/kubeadm-init.txt > /tmp/join_command.sh;
+aws s3 cp /tmp/join_command.sh s3://${s3buckit_name};
+
 mkdir -p /root/.kube
 mkdir -p /home/ubuntu/.kube
 cp -i /etc/kubernetes/admin.conf /root/.kube/config
@@ -91,20 +103,28 @@ chown ubuntu:ubuntu /home/ubuntu/.kube/config
 # Needed for consequent kubectl 
 export KUBECONFIG=/root/.kube/config
 
+kubectl get nodes     >>  ${dbg_file} 2>&1
+kubectl get pods -A   >>  ${dbg_file} 2>&1
 # Debug
-for iter in {1..20}
-do
-  sleep 10
-  echo $iter >> ${dbg_file} 
-  date >> ${dbg_file} 
-  kubectl get pods -A >> ${dbg_file} 2>&1
-done
+# for iter in {1..20}
+# do
+#   sleep 10
+#   echo $iter >> ${dbg_file} 
+#   date >> ${dbg_file} 
+#   kubectl get pods -A >> ${dbg_file} 2>&1
+# done
 
 #Step :9 Install Kubernetes Network Plugin (master node)
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml > /root/calico-stat.txt 2>&1
 
+# install nginx ingress 
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install ingress --namespace ingress \
+                     --create-namespace \
+                     --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=ClusterIP,controller.hostNetwork=true \
+                     ingress-nginx/ingress-nginx > /root/ingress.txt 1>&2
 
-
+helm list -A >> /root/ingress.txt 1>&2
 
 # # Install Docker
 # apt install ca-certificates curl gnupg wget apt-transport-https -y
@@ -144,10 +164,10 @@ kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/
 
 # install nginx ingress 
 # helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-# helm install ingress --namespace ingress --create-namespace --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=ClusterIP,controller.hostNetwork=true ingress-nginx/ingress-nginx
-
-
-
-
-
-
+# helm install ingress --namespace ingress \
+#                      --create-namespace \
+#                      --set rbac.create=true,\
+#                            controller.kind=DaemonSet,\
+#                            controller.service.type=ClusterIP,\
+#                            controller.hostNetwork=true \
+#                            ingress-nginx/ingress-nginx
