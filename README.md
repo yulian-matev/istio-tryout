@@ -11,11 +11,11 @@
     * k8s-worker-2
   * network objects
   * s3 bucket - needed for storing `kubeadm join` command
-     
+
 ### Infrastructure precondition
 
 For a successful infrastructure provisioning we need:
- 
+
   * active AWS acount
   * `terraform` installed locally 
 

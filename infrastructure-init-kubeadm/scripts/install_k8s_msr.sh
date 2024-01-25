@@ -73,8 +73,8 @@ apt-get install -y kubelet \
                    kubectl
 apt-mark hold kubelet kubeadm kubectl
 
-# install aws 
-apt-get install -y awscli 
+# install aws
+apt-get install -y awscli
 
 # install helm
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor |  tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -98,9 +98,9 @@ mkdir -p /root/.kube
 mkdir -p /home/ubuntu/.kube
 cp -i /etc/kubernetes/admin.conf /root/.kube/config
 cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
-chown ubuntu:ubuntu /home/ubuntu/.kube/config
+chown -R ubuntu:ubuntu /home/ubuntu/.kube
 
-# Needed for consequent kubectl 
+# Needed for consequent kubectl
 export KUBECONFIG=/root/.kube/config
 
 kubectl get nodes     >>  ${dbg_file} 2>&1
@@ -109,22 +109,27 @@ kubectl get pods -A   >>  ${dbg_file} 2>&1
 # for iter in {1..20}
 # do
 #   sleep 10
-#   echo $iter >> ${dbg_file} 
-#   date >> ${dbg_file} 
+#   echo $iter >> ${dbg_file}
+#   date >> ${dbg_file}
 #   kubectl get pods -A >> ${dbg_file} 2>&1
 # done
 
 #Step :9 Install Kubernetes Network Plugin (master node)
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml > /root/calico-stat.txt 2>&1
 
-# install nginx ingress 
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm install ingress --namespace ingress \
-                     --create-namespace \
-                     --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=ClusterIP,controller.hostNetwork=true \
-                     ingress-nginx/ingress-nginx > /root/ingress.txt 1>&2
+# install nginx ingress
+# helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+# helm install ingress --namespace ingress \
+#                      --create-namespace \
+#                      --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=ClusterIP,controller.hostNetwork=true \
+#                      ingress-nginx/ingress-nginx > /root/ingress.txt 2>&1
 
-helm list -A >> /root/ingress.txt 1>&2
+# helm list -A >> /root/ingress.txt 2>&1
+
+
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
 
 # # Install Docker
 # apt install ca-certificates curl gnupg wget apt-transport-https -y
@@ -137,14 +142,14 @@ helm list -A >> /root/ingress.txt 1>&2
 #   tee /etc/apt/sources.list.d/docker.list > /dev/null
 # apt update
 # apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-  
-  
+
+
 # usermod -aG docker ubuntu
 
 
 # # Download and Install Minikube Binary
 # curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-# install minikube-linux-amd64 /usr/local/bin/minikube   
+# install minikube-linux-amd64 /usr/local/bin/minikube
 
 # # Verify minikube version
 # minikube version > ~/minikube-version.txt
@@ -155,14 +160,14 @@ helm list -A >> /root/ingress.txt 1>&2
 # mv kubectl /usr/local/bin/
 
 # # Verify Kubectl tool
-# kubectl version -o yaml > ~/kubectl-version.txt 
+# kubectl version -o yaml > ~/kubectl-version.txt
 
 
-# minikube start --nodes 2 | tee ~/minikube-start.txt 
+# minikube start --nodes 2 | tee ~/minikube-start.txt
 
 
 
-# install nginx ingress 
+# install nginx ingress
 # helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 # helm install ingress --namespace ingress \
 #                      --create-namespace \

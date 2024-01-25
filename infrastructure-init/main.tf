@@ -103,6 +103,29 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+ # Weave Net
+  ingress {
+    from_port   = 6783
+    to_port     = 6783
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Weave Net
+  ingress {
+    from_port   = 6783
+    to_port     = 6784
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # custom application
+  ingress {
+    from_port   = 9011
+    to_port     = 9012
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   ingress {
     from_port   = 30000
@@ -177,8 +200,8 @@ resource "aws_instance" "ec2_instance_msr" {
     random_string.s3name
   ]
 
-    
-} 
+
+}
 
 resource "aws_instance" "ec2_instance_wrk" {
     ami = var.ami_id
@@ -205,10 +228,10 @@ resource "aws_instance" "ec2_instance_wrk" {
     worker_number = "${count.index + 1}"
 
     })}")
-  
+
     depends_on = [
       aws_s3_bucket.s3buckit,
       random_string.s3name,
       aws_instance.ec2_instance_msr
   ]
-} 
+}

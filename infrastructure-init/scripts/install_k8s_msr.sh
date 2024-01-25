@@ -71,7 +71,9 @@ chmod 755 /home/ubuntu/.kube/config
 curl -o /root/calico.yaml https://docs.projectcalico.org/v3.16/manifests/calico.yaml
 sleep 5
 #kubectl --kubeconfig /root/.kube/config apply -f /root/calico.yaml
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
 systemctl restart kubelet
+sleep 5
 
 # Apply kubectl Cheat Sheet Autocomplete
 source <(kubectl completion bash) # set up autocomplete in bash into the current shell, bash-completion package should be installed first.

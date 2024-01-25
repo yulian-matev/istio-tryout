@@ -76,15 +76,15 @@ cp -i /etc/kubernetes/admin.conf /root/.kube/config
 cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
-# install aws 
-apt-get install -y awscli 
+# install aws
+apt-get install -y awscli
 
 
-# Needed for consequent kubectl 
+# Needed for consequent kubectl
 export KUBECONFIG=/root/.kube/config
 
 
-# Wait for the 'join_command.sh' (from S3 storage) become available. Max wait time 250s = 5*50 
+# Wait for the 'join_command.sh' (from S3 storage) become available. Max wait time 250s = 5*50
 for iter in {1..50}
 do
   sleep 5
@@ -101,7 +101,7 @@ bash /tmp/join_command.sh
 
 
 
-# CHEKING S3 file exists 
+# CHEKING S3 file exists
 #
 # ubuntu@k8s-wrk-1:~$ aws s3api head-object --bucket k8s-rzef7bufj --key join_command.sh
 # {

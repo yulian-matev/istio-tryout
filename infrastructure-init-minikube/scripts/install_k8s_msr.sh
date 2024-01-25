@@ -23,14 +23,14 @@ echo \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt update
 apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-  
-  
+
+
 usermod -aG docker ubuntu
 
 
 # Download and Install Minikube Binary
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-install minikube-linux-amd64 /usr/local/bin/minikube   
+install minikube-linux-amd64 /usr/local/bin/minikube
 
 # Verify minikube version
 minikube version > ~/minikube-version.txt
@@ -41,7 +41,7 @@ chmod +x kubectl
 mv kubectl /usr/local/bin/
 
 # Verify Kubectl tool
-kubectl version -o yaml > ~/kubectl-version.txt 
+kubectl version -o yaml > ~/kubectl-version.txt
 
 
-minikube start --nodes 2 | tee ~/minikube-start.txt 
+minikube start --nodes 2 | tee ~/minikube-start.txt
