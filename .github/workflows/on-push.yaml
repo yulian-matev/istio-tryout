@@ -19,9 +19,24 @@ jobs:
           black_args: ". --check"
 
   php-check-syntax:
+    needs: editorconfig
     runs-on:  ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: StephaneBour/actions-php-lint@8.2
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Run PHP lint
+        uses: StephaneBour/actions-php-lint@8.2
         with:
           dir: './src'
+
+  markdown-checker:
+    needs: editorconfig
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Run marksown checker
+        uses: DavidAnson/markdownlint-cli2-action@v13
+        with:
+          config: '.markdownlint.yml'
+          globs: '**/*.md'
