@@ -17,3 +17,10 @@ jobs:
       - uses: rickstaa/action-black@v1
         with:
           black_args: ". --check"
+
+  php-check-syntax:
+    runs-on:  ubuntu-20.04
+    steps:
+      - uses: StephaneBour/actions-php-lint@8.2
+        with:
+          dir: './src'
