@@ -23,7 +23,7 @@ For a successful infrastructure provisioning we need:
 ```bash
 cd infrastructure-init
 terraform init             # initialize backend - need to be called once
-terraform plan             # optianal
+terraform plan             # optional
 terraform apply            # create/upddate infrastructure
 
 ```
