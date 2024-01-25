@@ -1,6 +1,6 @@
 version: "3"
 services:
-  
+
   nginx:
     build:
       context: nginx/
@@ -20,3 +20,4 @@ services:
 networks:
   internal:
     driver: bridge
+

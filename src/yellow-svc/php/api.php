@@ -7,7 +7,7 @@ define("SERVICE_VER",   "1.1");
 $seq_counter = 1;
 if( apcu_exists('seq_counter' ) ) {
     $seq_counter = apcu_fetch('seq_counter');
-} 
+}
 
 
 $arr = array(
@@ -27,3 +27,4 @@ apcu_store('seq_counter', $seq_counter);
 echo json_encode($arr);
 
 ?>
+
