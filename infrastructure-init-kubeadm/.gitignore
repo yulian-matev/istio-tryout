@@ -3,7 +3,7 @@
 terraform.tfstate.backup
 terraform.tfstate
 
-# Keep away AWS secrets  
+# Keep away AWS secrets
 secrets/
 terraform.tfvars
 

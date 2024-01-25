@@ -119,7 +119,7 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
- # Weave Net 
+ # Weave Net
   ingress {
     from_port   = 6783
     to_port     = 6783
@@ -127,7 +127,7 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Weave Net 
+  # Weave Net
   ingress {
     from_port   = 6783
     to_port     = 6784
@@ -218,8 +218,8 @@ resource "aws_instance" "ec2_instance_msr" {
     random_string.s3name
   ]
 
-    
-} 
+
+}
 
 resource "aws_instance" "ec2_instance_wrk" {
     ami = var.ami_id
@@ -246,10 +246,10 @@ resource "aws_instance" "ec2_instance_wrk" {
     worker_number = "${count.index + 1}"
 
     })}")
-  
+
     depends_on = [
       aws_s3_bucket.s3buckit,
       random_string.s3name,
       aws_instance.ec2_instance_msr
   ]
-} 
+}
