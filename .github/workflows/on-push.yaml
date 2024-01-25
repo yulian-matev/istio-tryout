@@ -21,6 +21,7 @@ jobs:
   php-check-syntax:
     runs-on:  ubuntu-20.04
     steps:
+      - uses: actions/checkout@v4
       - uses: StephaneBour/actions-php-lint@8.2
         with:
-          dir: src/blue-svc/php
+          dir: './src/blue-svc/php'
