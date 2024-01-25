@@ -38,5 +38,5 @@ jobs:
       - name: Run marksown checker
         uses: DavidAnson/markdownlint-cli2-action@v13
         with:
-          config: '.markdownlint.yml'
+          config: './.github/.markdownlint.yml'
           globs: '**/*.md'
