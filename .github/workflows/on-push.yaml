@@ -1,0 +1,19 @@
+name: Verify after each push
+run-name: Verify after each push
+on: [push]
+jobs:
+
+  editorconfig:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: editorconfig-checker/action-editorconfig-checker@main
+      - run: editorconfig-checker
+    
+  code-checker-black:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rickstaa/action-black@v1
+        with:
+          black_args: ". --check"    
