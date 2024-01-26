@@ -54,6 +54,7 @@ jobs:
           MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
           echo "Calculate docker image tag: ${MY_TAG}"
           echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
+          perl -p -e 's/xxxxxxx/${MY_TAG}/g' ./src/micro-svc/php/api.php
 
       -
         name: Set up Docker Buildx
