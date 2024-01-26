@@ -75,9 +75,15 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
       -
+        name: Compose docker image tag
+        run: |
+          MY_TAG="${GITHUB_RUN_NUMBER}-${GITHUB_SHA::6}"
+          echo "Composed tag: ${MY_TAG}""
+
+      -
         name: Build docker and Push
         uses: docker/build-push-action@v5
         with:
           context: "{{defaultContext}}:src/blue-svc/nginx"
           push: true
-          tags: "ymatev/blue-svc-nginx:${{ github.sha }}"
+          tags: "ymatev/blue-svc-nginx:$MY_TAG"
