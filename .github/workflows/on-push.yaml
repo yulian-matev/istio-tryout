@@ -77,10 +77,30 @@ jobs:
           tags: "micro-svc-nginx:pre-image"
 
       -
+        name: Preliminary build of docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: "{{defaultContext}}:src/micro-svc/php"
+          load: true
+          push: false
+          tags: "micro-svc-php:pre-image"
+
+      -
         name: Run Trivy vulnerability scanner on 'pre-image'
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'micro-svc-nginx:pre-image'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      -
+        name: Run Trivy vulnerability scanner on 'pre-image'
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'micro-svc-php:pre-image'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -94,3 +114,11 @@ jobs:
           context: "{{defaultContext}}:src/micro-svc/nginx"
           push: true
           tags: "ymatev/micro-svc-nginx:${{ steps.docker-img-tag.outputs.MY_IMG_TAG }}"
+
+      -
+        name: Build docker and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: "{{defaultContext}}:src/micro-svc/php"
+          push: true
+          tags: "ymatev/micro-svc-php:${{ steps.docker-img-tag.outputs.MY_IMG_TAG }}"
