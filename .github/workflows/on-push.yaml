@@ -79,6 +79,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: "{{defaultContext}}:src/blue-svc/nginx"
-          load: true
           push: true
           tags: "ymatev/blue-svc-nginx:${{ github.sha }}"
