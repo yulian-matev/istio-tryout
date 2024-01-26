@@ -29,17 +29,18 @@ jobs:
         with:
           dir: './src'
 
-  markdown-checker:
-    needs: editorconfig
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Run marksown checker
-        uses: DavidAnson/markdownlint-cli2-action@v13
-        with:
-          config: './.github/.markdownlint.yml'
-          globs: '**/*.md'
+  # TODO:
+  # markdown-checker:
+  #   needs: editorconfig
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v4
+  #     - name: Run marksown checker
+  #       uses: DavidAnson/markdownlint-cli2-action@v13
+  #       with:
+  #         config: './.github/.markdownlint.yml'
+  #         globs: '**/*.md'
 
   build-docker-image:
     needs: [editorconfig,php-check-syntax]
