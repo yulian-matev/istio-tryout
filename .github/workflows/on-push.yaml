@@ -78,7 +78,7 @@ jobs:
         name: Compose docker image tag
         run: |
           MY_TAG="${GITHUB_RUN_NUMBER}-${GITHUB_SHA::6}"
-          echo "Composed tag: ${MY_TAG}""
+          echo "Composed tag: ${MY_TAG}"
 
       -
         name: Build docker and Push
