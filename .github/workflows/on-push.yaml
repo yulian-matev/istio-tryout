@@ -75,11 +75,11 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
       -
-        name: Compose docker image tag
+        name: Calculate docker image tag
         id: docker-img-tag
         run: |
           MY_TAG=${GITHUB_RUN_NUMBER}-${GITHUB_SHA::6}
-          echo "Composed tag: ${MY_TAG}"
+          echo "Calculate docker image tag: ${MY_TAG}"
           echo "MY_TAG=${GITHUB_RUN_NUMBER}-${GITHUB_SHA::6}" >> $GITHUB_OUTPUT
 
       -
@@ -88,4 +88,4 @@ jobs:
         with:
           context: "{{defaultContext}}:src/blue-svc/nginx"
           push: true
-          tags: "ymatev/blue-svc-nginx: ${{ steps.docker-img-tag.outputs.MY_TAG }}"
+          tags: "ymatev/blue-svc-nginx:${{ steps.docker-img-tag.outputs.MY_TAG }}"
