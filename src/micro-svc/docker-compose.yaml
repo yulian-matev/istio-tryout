@@ -16,8 +16,10 @@ services:
       dockerfile: Dockerfile
     networks:
       - internal
+    environment:
+      - KB_DB_TAG_VERSIONSERVICE_NAME=yellow
 
 networks:
   internal:
-    driver: bridge
 
+    driver: bridge
