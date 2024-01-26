@@ -45,6 +45,18 @@ jobs:
     needs: [editorconfig,php-check-syntax]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      -
+        name: Calculate docker image tag
+        id: docker-img-tag
+        run: |
+          pwd
+          find .
+          USER_VERSION=$(perl -n -e'/"SERVICE_VER",\s+.*"(.*)"/ && print $1' ./src/blue-svc/php/api.php)
+          MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
+          echo "Calculate docker image tag: ${MY_TAG}"
+          echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
+
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -75,17 +87,6 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-
-      -
-        name: Calculate docker image tag
-        id: docker-img-tag
-        run: |
-          pwd
-          find .
-          USER_VERSION=$(perl -n -e'/"SERVICE_VER",\s+.*"(.*)"/ && print $1' ./src/blue-svc/php/api.php)
-          MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
-          echo "Calculate docker image tag: ${MY_TAG}"
-          echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
 
       -
         name: Build docker and Push
