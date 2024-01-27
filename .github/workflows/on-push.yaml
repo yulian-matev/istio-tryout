@@ -29,6 +29,6 @@ jobs:
           echo "this is test" > text.txt
           echo "ls -l" && ls -l
           git add text.txt
-          git commmit -m "Create deployment for tag"
+          git commit -m "Create deployment for tag"
 
           git push
