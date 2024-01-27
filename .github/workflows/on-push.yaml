@@ -1,5 +1,5 @@
-name: Verify after each push
-run-name: Verify after each push
+name: on-push
+run-name: on-push
 on: [push]
 jobs:
 
@@ -9,3 +9,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: editorconfig-checker/action-editorconfig-checker@main
       - run: editorconfig-checker
+
+  generate-deployment:
+    needs: [editorconfig]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate deployment files
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: |
+          git clone https://yulian-matev:$GITHUB_TOKEN@github.com/yulian-matev/istio-tryout-deployment    # This works
+
+          find .

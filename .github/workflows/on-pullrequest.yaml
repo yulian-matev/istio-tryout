@@ -1,5 +1,5 @@
-name: Verify after each push
-run-name: Verify after each push
+name: on-pull-request
+run-name: on-pull-request
 on: [pull_request]
 jobs:
 
