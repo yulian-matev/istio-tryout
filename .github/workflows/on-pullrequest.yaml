@@ -1,6 +1,6 @@
 name: on-pull-request
 run-name: on-pull-request
-on: [pull_request]
+on: [push,pull_request]
 jobs:
 
   editorconfig:
