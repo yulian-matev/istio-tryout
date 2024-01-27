@@ -8,8 +8,8 @@ if( apcu_exists('seq_counter' ) ) {
     $seq_counter = apcu_fetch('seq_counter');
 }
 
-# Try to detect service name from environment or default to 'black'
-$service_name = 'black';
+# Try to detect service name from environment or default to 'white'
+$service_name = 'white';
 if( getenv("SERVICE_NAME") !== false ) {
     $service_name = $_ENV['SERVICE_NAME'];
 }
