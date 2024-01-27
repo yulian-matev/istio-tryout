@@ -47,7 +47,7 @@ jobs:
 
           cp ../../deployment-template/*.yml .
 
-          # global inplace replacement of value __TAG__ with conent of env var IMG_TAG
+          # global inplace replacement of value __TAG__ with env var IMG_TAG content
           #
           #   -p                assume loop like -n but print line also, like sed
           #   -i[extension]     edit <> files in place (makes backup if extension supplied)
