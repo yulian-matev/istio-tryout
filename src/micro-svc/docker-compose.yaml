@@ -10,16 +10,13 @@ services:
     networks:
       - internal
 
-  php:
+  php-svc:
     build:
       context: php/
       dockerfile: Dockerfile
     networks:
       - internal
-    environment:
-      - KB_DB_TAG_VERSIONSERVICE_NAME=yellow
 
 networks:
   internal:
-
     driver: bridge
