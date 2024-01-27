@@ -29,6 +29,17 @@ spec:
           protocol: TCP
       - name: php-svc
         image: ymatev/micro-svc-php:__TAG__
+        env:
+          - name: SERVICE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: devops-blue-configmap
+                key: microservice.name
+          - name: SERVICE_VERSION_LONG
+            valueFrom:
+              configMapKeyRef:
+                name: devops-blue-configmap
+                key: microservice.version.long
         resources:
           limits:
             cpu: "0.5"

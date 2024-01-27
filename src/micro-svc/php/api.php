@@ -15,10 +15,9 @@ if( getenv("SERVICE_NAME") !== false ) {
 }
 
 $version_long = '';
-if( getenv("SERVICE_VER_LONG") !== false ) {
-    $service_name = $_ENV['SERVICE_VER_LONG'];
+if( getenv("SERVICE_VERSION_LONG") !== false ) {
+    $version_long = $_ENV['SERVICE_VERSION_LONG'];
 }
-
 
 $arr = array(
                 'service-name'  => $service_name,
