@@ -14,11 +14,12 @@ jobs:
     needs: [editorconfig]
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.step2.outputs.MY_IMG_TAG }}
+      img-tag-out: ${{ steps.tag_calc_step.outputs.MY_IMG_TAG }}
     steps:
       - uses: actions/checkout@v4
       -
         name: Calculate docker image tag
+        id: tag_calc_step
         run: |
           USER_VERSION=$(perl -n -e'/"SERVICE_VER",\s+.*"(.*)"/ && print $1' ./src/micro-svc/php/api.php)
           MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
@@ -52,6 +53,6 @@ jobs:
           echo "ls -l" && ls -l
           git add *.yml
 
-          git commit -m "Create deployment for tag ${{needs.calc-docker-image-tag.outputs.output1}}"
+          git commit -m "Create deployment for tag ${{needs.calc-docker-image-tag.outputs.img-tag-out}}"
 
           git push
