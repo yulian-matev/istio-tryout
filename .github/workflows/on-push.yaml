@@ -25,7 +25,6 @@ jobs:
           MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
           echo "Calculate docker image tag: ${MY_TAG}"
           echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
-          perl -p -e 's/xxxxxxx/${MY_TAG}/g' ./src/micro-svc/php/api.php
 
   generate-deployment:
     needs: [calc-docker-image-tag]
@@ -36,6 +35,7 @@ jobs:
       - name: Generate deployment files
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          IMG_TAG: ${{needs.calc-docker-image-tag.outputs.img-tag-out}}
           DEPL_REPO: istio-tryout-deployment
         run: |
           git clone https://yulian-matev:$GITHUB_TOKEN@github.com/yulian-matev/${DEPL_REPO}    # This works
@@ -45,14 +45,15 @@ jobs:
           git config user.name "github-action"
           git config user.email "noreply@devoops.com"
 
-          #cat ../README.md > text.txt
-          #echo "this is test" >> text.txt
-
           cp ../../deployment-template/*.yml .
 
-          echo "ls -l" && ls -l
+          # global inplace replacement of value __TAG__ with conent of env var IMG_TAG
+          #
+          #   -p                assume loop like -n but print line also, like sed
+          #   -i[extension]     edit <> files in place (makes backup if extension supplied)
+          #   -e program        one line of program
+          perl -pie 's/__TAG__/$ENV{IMG_TAG}/g' *.yml
+
           git add *.yml
-
-          git commit -m "Create deployment for tag ${{needs.calc-docker-image-tag.outputs.img-tag-out}}"
-
+          git commit -m "Create deployment for tag $IMG_TAG"
           git push
