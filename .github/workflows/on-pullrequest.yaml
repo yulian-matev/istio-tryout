@@ -42,20 +42,36 @@ jobs:
   #         config: './.github/.markdownlint.yml'
   #         globs: '**/*.md'
 
-  build-docker-image:
-    needs: [editorconfig,php-check-syntax]
+  calc-docker-image-tag:
+    needs: [editorconfig]
     runs-on: ubuntu-latest
+    outputs:
+      img-tag-out: ${{ steps.tag_calc_step.outputs.MY_IMG_TAG }}
     steps:
       - uses: actions/checkout@v4
       -
         name: Calculate docker image tag
-        id: docker-img-tag
+        id: tag_calc_step
         run: |
           USER_VERSION=$(perl -n -e'/"SERVICE_VER",\s+.*"(.*)"/ && print $1' ./src/micro-svc/php/api.php)
           MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
-          echo "Calculate docker image tag: ${MY_TAG}"
+          echo "Calculated docker image tag: ${MY_TAG}"
           echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
-          perl -p -e 's/xxxxxxx/${MY_TAG}/g' ./src/micro-svc/php/api.php
+
+  build-docker-image:
+    needs: [editorconfig,php-check-syntax,calc-docker-image-tag]
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@v4
+      # -
+      #   name: Calculate docker image tag
+      #   id: docker-img-tag
+      #   run: |
+      #     USER_VERSION=$(perl -n -e'/"SERVICE_VER",\s+.*"(.*)"/ && print $1' ./src/micro-svc/php/api.php)
+      #     MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
+      #     echo "Calculate docker image tag: ${MY_TAG}"
+      #     echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
+      #     perl -p -e 's/xxxxxxx/${MY_TAG}/g' ./src/micro-svc/php/api.php
 
       -
         name: Set up Docker Buildx
@@ -114,7 +130,7 @@ jobs:
         with:
           context: "{{defaultContext}}:src/micro-svc/nginx"
           push: true
-          tags: "ymatev/micro-svc-nginx:${{ steps.docker-img-tag.outputs.MY_IMG_TAG }}"
+          tags: "ymatev/micro-svc-nginx:${{needs.calc-docker-image-tag.outputs.img-tag-out}}"
 
       -
         name: Build docker and Push
@@ -122,4 +138,37 @@ jobs:
         with:
           context: "{{defaultContext}}:src/micro-svc/php"
           push: true
-          tags: "ymatev/micro-svc-php:${{ steps.docker-img-tag.outputs.MY_IMG_TAG }}"
+          tags: "ymatev/micro-svc-php:${{needs.calc-docker-image-tag.outputs.img-tag-out}}"
+
+
+  generate-deployment:
+    needs: [calc-docker-image-tag, build-docker-image]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate deployment files
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          IMG_TAG: ${{needs.calc-docker-image-tag.outputs.img-tag-out}}
+          DEPL_REPO: istio-tryout-deployment
+        run: |
+          git clone https://yulian-matev:$GITHUB_TOKEN@github.com/yulian-matev/${DEPL_REPO}    # This works
+
+          cd ${DEPL_REPO}/templates
+          echo "pwd: " && pwd
+          git config user.name "github-action"
+          git config user.email "noreply@devoops.com"
+
+          cp ../../deployment-template/*.yml .
+
+          # global inplace replacement of value __TAG__ with conent of env var IMG_TAG
+          #
+          #   -p                assume loop like -n but print line also, like sed
+          #   -i[extension]     edit <> files in place (makes backup if extension supplied)
+          #   -e program        one line of program
+          perl -pi -e 's/__TAG__/$ENV{IMG_TAG}/g' *.yml
+
+          git add *.yml
+          git commit -m "Create deployment for tag $IMG_TAG"
+          git push
