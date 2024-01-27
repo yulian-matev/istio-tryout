@@ -17,6 +17,8 @@ if( getenv("SERVICE_NAME") !== false ) {
 
 $arr = array(
                 'service-name'  => $service_name,
+                'pod-ip-addr'   => $_SERVER['SERVER_ADDR'],
+                'pod-hostname'  => $_SERVER['SERVER_NAME'],
                 'version'       => SERVICE_VER,
                 'commit-sha'    => 'xxxxxxx',
                 'now'           => date('Y-m-d h:i:s'),

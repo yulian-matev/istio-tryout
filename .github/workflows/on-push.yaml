@@ -13,6 +13,8 @@ jobs:
   calc-docker-image-tag:
     needs: [editorconfig]
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step2.outputs.MY_IMG_TAG }}
     steps:
       - uses: actions/checkout@v4
       -
@@ -50,6 +52,6 @@ jobs:
           echo "ls -l" && ls -l
           git add *.yml
 
-          git commit -m "Create deployment for tag"
+          git commit -m "Create deployment for tag ${{needs.calc-docker-image-tag.outputs.output1}}"
 
           git push
