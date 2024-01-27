@@ -17,7 +17,16 @@ jobs:
       - name: Generate deployment files
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          DEPL_REPO: istio-tryout-deployment
         run: |
-          git clone https://yulian-matev:$GITHUB_TOKEN@github.com/yulian-matev/istio-tryout-deployment    # This works
+          git clone https://yulian-matev:$GITHUB_TOKEN@github.com/yulian-matev/${DEPL_REPO}    # This works
 
-          find .
+          cd ${DEPL_REPO}
+          git config user.name "github-action"
+          git config user.email "noreply@devoops.com"
+
+          echo "this is test" $(date) > text.txt
+          git add test.txt
+          git commmit -m "Create deployment for tag"
+
+          git push
