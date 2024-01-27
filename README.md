@@ -27,3 +27,22 @@ terraform plan             # optional
 terraform apply            # create/upddate infrastructure
 
 ```
+
+## Configure local `kubectl` to access AWS EKS cluster
+
+1. Confugre credentials for `awscli`
+
+    ```bash
+    asw cofigure
+
+    # std input:
+    #access_key: AKIxxxxxxxxxxxxxxxxx
+    #secret_key: h6V/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    ```
+
+2. Exctract credentials from `awscli` to `kubectl` (file `/home/user/.kube/config` gets updated):
+
+    ```bash
+    aws eks update-kubeconfig --region <region> --name <cluster-name>
+    # aws eks update-kubeconfig --region eu-central-1 --name education-eks-iCgeDNNU
+    ```
