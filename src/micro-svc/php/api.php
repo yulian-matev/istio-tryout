@@ -14,13 +14,18 @@ if( getenv("SERVICE_NAME") !== false ) {
     $service_name = $_ENV['SERVICE_NAME'];
 }
 
+$version_long = '';
+if( getenv("SERVICE_VER_LONG") !== false ) {
+    $service_name = $_ENV['SERVICE_VER_LONG'];
+}
+
 
 $arr = array(
                 'service-name'  => $service_name,
                 'pod-ip-addr'   => $_SERVER['SERVER_ADDR'],
                 'pod-hostname'  => $_SERVER['SERVER_NAME'],
                 'version'       => SERVICE_VER,
-                'commit-sha'    => 'xxxxxxx',
+                'version-long'  => $version_long,
                 'now'           => date('Y-m-d h:i:s'),
                 'seq-counter:'  => $seq_counter
             );
