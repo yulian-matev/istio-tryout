@@ -14,6 +14,8 @@ jobs:
     needs: [editorconfig]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Generate deployment files
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
@@ -26,7 +28,7 @@ jobs:
           git config user.name "github-action"
           git config user.email "noreply@devoops.com"
 
-          date > text.txt
+          cat ../README.md > text.txt
           echo "this is test" >> text.txt
 
           echo "ls -l" && ls -l
