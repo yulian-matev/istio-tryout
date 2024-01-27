@@ -52,7 +52,7 @@ jobs:
           #   -p                assume loop like -n but print line also, like sed
           #   -i[extension]     edit <> files in place (makes backup if extension supplied)
           #   -e program        one line of program
-          perl -pie 's/__TAG__/$ENV{IMG_TAG}/g' *.yml
+          perl -pi -e 's/__TAG__/$ENV{IMG_TAG}/g' *.yml
 
           git add *.yml
           git commit -m "Create deployment for tag $IMG_TAG"
