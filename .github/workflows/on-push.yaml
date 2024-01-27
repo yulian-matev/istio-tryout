@@ -26,7 +26,9 @@ jobs:
           git config user.name "github-action"
           git config user.email "noreply@devoops.com"
 
-          echo "this is test" > text.txt
+          date > text.txt
+          echo "this is test" >> text.txt
+
           echo "ls -l" && ls -l
           git add text.txt
           git commit -m "Create deployment for tag"
