@@ -12,5 +12,5 @@ spec:
   type:  LoadBalancer
   ports:
   - name: devops-blue-port
-    port: 8008         # port number to be available at host
+    port: 8008         # port number to be available at host; was 8888
     targetPort: 80     # port on pod
