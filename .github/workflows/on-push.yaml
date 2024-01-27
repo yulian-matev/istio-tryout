@@ -37,7 +37,7 @@ jobs:
         run: |
           git clone https://yulian-matev:$GITHUB_TOKEN@github.com/yulian-matev/${DEPL_REPO}    # This works
 
-          cd ${DEPL_REPO}
+          cd ${DEPL_REPO}/templates
           echo "pwd: " && pwd
           git config user.name "github-action"
           git config user.email "noreply@devoops.com"
@@ -45,7 +45,7 @@ jobs:
           #cat ../README.md > text.txt
           #echo "this is test" >> text.txt
 
-          cp ../deployment-template/*.yml .
+          cp ../../deployment-template/*.yml .
 
           echo "ls -l" && ls -l
           git add *.yml
