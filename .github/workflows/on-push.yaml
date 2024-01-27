@@ -42,11 +42,14 @@ jobs:
           git config user.name "github-action"
           git config user.email "noreply@devoops.com"
 
-          cat ../README.md > text.txt
-          echo "this is test" >> text.txt
+          #cat ../README.md > text.txt
+          #echo "this is test" >> text.txt
+
+          cp ../deployment-template/*.yml .
 
           echo "ls -l" && ls -l
-          git add text.txt
+          git add *.yml
+
           git commit -m "Create deployment for tag"
 
           git push
