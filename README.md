@@ -46,3 +46,8 @@ terraform apply            # create/upddate infrastructure
     aws eks update-kubeconfig --region <region> --name <cluster-name>
     # aws eks update-kubeconfig --region eu-central-1 --name education-eks-iCgeDNNU
     ```
+
+
+## Application deployment repo
+
+[istio-tryout-deployment](https://github.com/yulian-matev/istio-tryout-deployment)
