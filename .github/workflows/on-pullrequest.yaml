@@ -13,14 +13,6 @@ jobs:
       - uses: editorconfig-checker/action-editorconfig-checker@main
       - run: editorconfig-checker
 
-  code-checker-black:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: rickstaa/action-black@v1
-        with:
-          black_args: ". --check"
-
   php-check-syntax:
     needs: editorconfig
     runs-on:  ubuntu-20.04
@@ -31,6 +23,32 @@ jobs:
         uses: StephaneBour/actions-php-lint@8.2
         with:
           dir: './src'
+
+  gitleaks-scan:
+    needs: editorconfig
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+
+  sonarcloud:
+    needs: editorconfig
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   # TODO:
   # markdown-checker:
@@ -62,7 +80,7 @@ jobs:
           echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
 
   build-docker-image:
-    needs: [editorconfig,php-check-syntax,calc-docker-image-tag]
+    needs: [editorconfig,php-check-syntax,calc-docker-image-tag,gitleaks-scan,gitleaks-scan]
     runs-on: ubuntu-latest
     steps:
       # - uses: actions/checkout@v4
