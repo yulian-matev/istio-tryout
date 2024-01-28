@@ -3,7 +3,7 @@ run-name: on-pull-request-accepted
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
 
   editorconfig:
