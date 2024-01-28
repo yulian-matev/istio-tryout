@@ -38,6 +38,6 @@ jobs:
         run: |
           USER_VERSION=$(perl -n -e'/"SERVICE_VER",\s+.*"(.*)"/ && print $1' ./src/micro-svc/php/api.php)
           MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
-          echo "Calculate docker image tag: ${MY_TAG}"
+          echo "Calculated docker image tag: ${MY_TAG}"
           echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
 
