@@ -4,17 +4,17 @@
   become: true
 
   tasks:
-    - name: Create namespace ArgoCD
-      shell: |
-        kubectl create namespace argocd
+    # - name: Create namespace ArgoCD
+    #   shell: |
+    #     kubectl create namespace argocd
 
-    - name: Install Argo CD
-      shell: |
-        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    # - name: Install Argo CD
+    #   shell: |
+    #     kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
     - name: Install Istio
       shell: |
-        istioctl install --set profile=demo
+        istioctl install -y --set profile=demo
 
     - name: Install Prometheus
       shell: |
