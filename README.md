@@ -1,5 +1,40 @@
+# Project overview
 
-# CI/CD overview
+This project produces a microservice which is deployed to a kubernetes cluster on AWS. Main idea is that it can be reused for other
+more meaningfull microservice projects.
+
+### Microservice data
+
+```json
+{
+    "service-name": "blue",           # configured inside ConfigMap during deployment
+    "pod-ip-addr": "10.0.3.26",
+    "pod-hostname": "",
+    "version": "1.1",                 # version as defined by developer
+    "version-long": "8-1.1-017472",   # generate by CI/CD
+    "now": "2024-01-28 02:32:32",
+    "seq-counter:": 11                # used to detect pod restart
+}
+```
+
+### Service version explained
+
+```cpp
+//  +--------------- Build version (GITHUB_RUN_NUMBER), incremented with each workflow execution
+//  |   +----------- Software version extracted from source code
+//  |   |      +---- Git commit SHA (first 6 symbols)
+//  |   |      |
+    8-1.1-017472
+```
+
+## Git branching strategy
+
+1. `master` branch is protected. Require a pull request before merging. All commits must be made to a non-protected branch and submitted via a pull request before they can be merged into a branch that matches this rule.
+2. All modifications happen throug _feature_ branches. Should start with `feat-`
+   * when ready a PR is created and merged to master branch
+3. Deployments are done only from `master` branch through a CI\CI pipeline
+
+## CI/CD overview
 
 ```text
     GitHub
