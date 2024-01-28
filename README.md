@@ -49,6 +49,37 @@ For a successful infrastructure provisioning we need:
     # aws eks update-kubeconfig --region eu-central-1 --name education-eks-iCgeDNNU
     ```
 
+## Overview
+
+```
+    GitHub
+                  on pull request OK:
+                    * gen Docker images
+  +------------+    * gen deployment     +-----------+ 
+  |  src_repo  | ----.     .-----------> | depl_repo |          
+  +-----------=+      \   /              +-----------+ 
+                       \ /                 ^
+                        V                  |
+                    +-----------+          |
+                    | Dockerhub |          |
+                    |  repo     |          |
+                    +-----------+          |
+                                           |
+    AWS                                    | monitor for changes
+                                           |   
+   +---------------------------------------|--------+
+   |    Kubernetes (AWS EKS)               |        |
+   |                                  +--------+    |
+   |        +-------------------------| ArgoCD |    |  
+   |        |     deploy              +--------+    |
+   |        V                                       |
+   |  +-----------+                                 |
+   |  |  my app   |                                 |
+   |  +-----------+                                 |
+   +------------------------------------------------+
+
+```
+
 ## Application deployment repo
 
 [istio-tryout-deployment](https://github.com/yulian-matev/istio-tryout-deployment)
