@@ -160,6 +160,15 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 ### Observability Add-ons
 
 ```bash
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/prometheus.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/grafana.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/kiali.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/jaeger.yaml
+```
+
+
+
+```bash
 # Visualize Istio Mesh console using Kiali
 kubectl port-forward svc/kiali 20001:20001 -n istio-system
 
