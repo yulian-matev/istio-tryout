@@ -1,4 +1,4 @@
-# Project overview
+## Project overview
 
 This project produces a microservice which is deployed to a kubernetes cluster on AWS. Main idea is that it can be reused for other
 more meaningfull microservice projects.
@@ -33,11 +33,10 @@ more meaningfull microservice projects.
 2. All modifications happen throug _feature_ branches. Should start with `feat-`
    * when ready a PR is created and merged to master branch
 
-    _feature_ branches:
-   ![image](https://github.com/yulian-matev/istio-tryout/assets/148268376/4f95e824-1a56-49e8-a2a4-8054f5b912d2)
-   
-4. Deployments are done only from `master` branch through a CI\CI pipeline
+   ![branch-strategy](doc/feature-branches.png)
+3. Deployments are done only from `master` branch through a CI\CI pipeline
 
+   ![branch-strategy](doc/branch-strategy.png)
 
 ## CI/CD overview
 
@@ -71,7 +70,7 @@ more meaningfull microservice projects.
 ```
 
 
-# Initalize AWS infrastructure
+## Initalize AWS infrastructure
 
 ### Infrastructure description
 
