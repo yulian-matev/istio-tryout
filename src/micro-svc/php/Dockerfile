@@ -8,3 +8,10 @@ RUN apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS \
         && apk del .build-dependencies
 
 ADD api.php /var/www/html
+
+RUN addgroup -S nonroot \
+    && adduser -S nonroot -G nonroot
+
+USER nonroot
+
+ENTRYPOINT ["id"]
