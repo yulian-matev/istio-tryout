@@ -1,5 +1,5 @@
-name: on-push
-run-name: on-push
+name: on-feature-push
+run-name: on-feature-push
 on:
   push:
     branches:
