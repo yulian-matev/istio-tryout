@@ -11,7 +11,4 @@ ADD api.php /var/www/html
 
 RUN addgroup -S nonroot \
     && adduser -S nonroot -G nonroot
-
 USER nonroot
-
-ENTRYPOINT ["id"]

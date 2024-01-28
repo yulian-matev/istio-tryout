@@ -1,0 +1,37 @@
+---
+- name: Install ArgoCD and Istio to K8s Cluster
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Create namespace ArgoCD
+      shell: |
+        kubectl create namespace argocd
+
+    - name: Install Argo CD
+      shell: |
+        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+    - name: Install Argo CD application
+      shell: |
+        kubectl apply -n argocd -f argocd-app.yml
+
+    # - name: Install Istio
+    #   shell: |
+    #     istioctl install -y --set profile=demo
+
+    # - name: Install Prometheus
+    #   shell: |
+    #     kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/prometheus.yaml
+
+    # - name: Install Grafana
+    #   shell: |
+    #     kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/grafana.yaml
+
+    # - name: Install Kiali
+    #   shell: |
+    #     kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/kiali.yaml
+
+    # - name: Install Jaeger
+    #   shell: |
+    #     kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/jaeger.yaml

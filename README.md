@@ -139,6 +139,22 @@ For a successful infrastructure provisioning we need:
     # aws eks update-kubeconfig --region eu-central-1 --name education-eks-iCgeDNNU
     ```
 
+### Install ArgoCD
+
+Install and verify:
+
+```bash
+cd infrastructure-cfg
+ansible-playbook playbook_argo.yml
+
+# verify installation:
+kubectl get pods,svc -n argocd
+
+# get admin password:
+kubectl get secret argocd-initial-admin-secret -n argocd -o yaml
+```
+
+
 
 ## Verify configuration
 
