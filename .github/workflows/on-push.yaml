@@ -24,20 +24,57 @@ jobs:
         with:
           dir: './src'
 
+  # secret-checker:
+  #   needs: [editorconfig]
+  #   runs-on: ubuntu-latest
+  #   name: Vulnerabilities check
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #     - name: Check for vulnerabilities
+  #       id: checks
+  #       uses: maddygoround/secretduty@v1.3
+  #       with:
+  #         severity: "['CRITICAL','MAJOR']"
+  #     - name: Get results of scan
+  #       run: echo "Scan Results - ${{ steps.checks.outputs.result }}"
 
-  calc-docker-image-tag:
-    needs: [editorconfig]
+  gitleaks-scan:
+    needs: editorconfig
+    name: gitleaks
     runs-on: ubuntu-latest
-    outputs:
-      img-tag-out: ${{ steps.tag_calc_step.outputs.MY_IMG_TAG }}
     steps:
       - uses: actions/checkout@v4
-      -
-        name: Calculate docker image tag
-        id: tag_calc_step
-        run: |
-          USER_VERSION=$(perl -n -e'/"SERVICE_VER",\s+.*"(.*)"/ && print $1' ./src/micro-svc/php/api.php)
-          MY_TAG=${GITHUB_RUN_NUMBER}-${USER_VERSION}-${GITHUB_SHA::6}
-          echo "Calculated docker image tag: ${MY_TAG}"
-          echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+#         GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}} # Only required for Organizations, not personal accounts
 
+  sonarcloud:
+    needs: editorconfig
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
+  # snyk-check:
+  #   needs: editorconfig
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - name: Run Snyk to check for vulnerabilities
+  #       uses: snyk/actions/php@master
+  #       env:
+  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #       with:
+  #         args: --severity-threshold=high
