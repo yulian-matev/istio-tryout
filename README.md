@@ -53,9 +53,9 @@ For a successful infrastructure provisioning we need:
     GitHub
                   on pull request OK:
                     * gen Docker images
-  +------------+    * gen deployment     +-----------+ 
-  |  src_repo  | ----.     .-----------> | depl_repo |          
-  +-----------=+      \   /              +-----------+ 
+  +------------+    * gen deployment     +-----------+
+  |  src_repo  | ----.     .-----------> | depl_repo |
+  +------------+      \   /              +-----------+
                        \ /                 ^
                         V                  |
                     +-----------+          |
@@ -64,11 +64,11 @@ For a successful infrastructure provisioning we need:
                     +-----------+          |
                                            |
     AWS                                    | monitor for changes
-                                           |   
+                                           |
    +---------------------------------------|--------+
    |    Kubernetes (AWS EKS)               |        |
    |                                  +--------+    |
-   |        +-------------------------| ArgoCD |    |  
+   |        +-------------------------| ArgoCD |    |
    |        |     deploy              +--------+    |
    |        V                                       |
    |  +-----------+                                 |
