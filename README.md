@@ -32,7 +32,12 @@ more meaningfull microservice projects.
 1. `master` branch is protected. Require a pull request before merging. All commits must be made to a non-protected branch and submitted via a pull request before they can be merged into a branch that matches this rule.
 2. All modifications happen throug _feature_ branches. Should start with `feat-`
    * when ready a PR is created and merged to master branch
-3. Deployments are done only from `master` branch through a CI\CI pipeline
+
+    _feature_ branches:
+   ![image](https://github.com/yulian-matev/istio-tryout/assets/148268376/4f95e824-1a56-49e8-a2a4-8054f5b912d2)
+   
+4. Deployments are done only from `master` branch through a CI\CI pipeline
+
 
 ## CI/CD overview
 
