@@ -51,7 +51,8 @@ For a successful infrastructure provisioning we need:
 
 ## Overview
 
-```
+```bash
+
     GitHub
                   on pull request OK:
                     * gen Docker images
