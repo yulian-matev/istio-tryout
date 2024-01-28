@@ -1,6 +1,9 @@
-name: on-push
-run-name: on-push
-on: [push]
+name: on-feature-push
+run-name: on-feature-push
+on:
+  push:
+    branches:
+      - 'feat-**'
 jobs:
 
   editorconfig:

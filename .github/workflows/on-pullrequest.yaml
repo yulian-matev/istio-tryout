@@ -1,9 +1,9 @@
-name: on-pull-request-accepted
-run-name: on-pull-request-accepted
+name: on-master-push
+run-name: on-master-push
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
 
   editorconfig:
