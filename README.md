@@ -16,17 +16,19 @@
 
 For a successful infrastructure provisioning we need:
 
-  * active AWS acount
-  * `terraform` installed locally 
+    * active AWS acount
+    * `terraform` installed locally
+    * `ansible`
+    * `istioctl`
+    * `kubectl`
 
+    ```bash
+    cd infrastructure-init
+    terraform init             # initialize backend - need to be called once
+    terraform plan             # optional
+    terraform apply            # create/upddate infrastructure
 
-```bash
-cd infrastructure-init
-terraform init             # initialize backend - need to be called once
-terraform plan             # optional
-terraform apply            # create/upddate infrastructure
-
-```
+    ```
 
 ## Configure local `kubectl` to access AWS EKS cluster
 
@@ -46,7 +48,6 @@ terraform apply            # create/upddate infrastructure
     aws eks update-kubeconfig --region <region> --name <cluster-name>
     # aws eks update-kubeconfig --region eu-central-1 --name education-eks-iCgeDNNU
     ```
-
 
 ## Application deployment repo
 

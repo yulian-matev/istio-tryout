@@ -10,6 +10,18 @@ jobs:
       - uses: editorconfig-checker/action-editorconfig-checker@main
       - run: editorconfig-checker
 
+  php-check-syntax:
+    needs: editorconfig
+    runs-on:  ubuntu-20.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Run PHP lint
+        uses: StephaneBour/actions-php-lint@8.2
+        with:
+          dir: './src'
+
+
   calc-docker-image-tag:
     needs: [editorconfig]
     runs-on: ubuntu-latest
@@ -26,34 +38,3 @@ jobs:
           echo "Calculate docker image tag: ${MY_TAG}"
           echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
 
-  generate-deployment:
-    needs: [calc-docker-image-tag]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Generate deployment files
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-          IMG_TAG: ${{needs.calc-docker-image-tag.outputs.img-tag-out}}
-          DEPL_REPO: istio-tryout-deployment
-        run: |
-          git clone https://yulian-matev:$GITHUB_TOKEN@github.com/yulian-matev/${DEPL_REPO}    # This works
-
-          cd ${DEPL_REPO}/templates
-          echo "pwd: " && pwd
-          git config user.name "github-action"
-          git config user.email "noreply@devoops.com"
-
-          cp ../../deployment-template/*.yml .
-
-          # global inplace replacement of value __TAG__ with env var IMG_TAG content
-          #
-          #   -p                assume loop like -n but print line also, like sed
-          #   -i[extension]     edit <> files in place (makes backup if extension supplied)
-          #   -e program        one line of program
-          perl -pi -e 's/__TAG__/$ENV{IMG_TAG}/g' *.yml
-
-          git add *.yml
-          git commit -m "Create deployment for tag $IMG_TAG"
-          git push

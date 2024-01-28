@@ -1,5 +1,5 @@
 ---
-- name: Install ArgoCD to K8s Cluster
+- name: Install ArgoCD and Istio to K8s Cluster
   hosts: localhost
   become: true
 
@@ -11,3 +11,23 @@
     - name: Install Argo CD
       shell: |
         kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+    - name: Install Istio
+      shell: |
+        istioctl install --set profile=demo
+
+    - name: Install Prometheus
+      shell: |
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/prometheus.yaml
+
+    - name: Install Grafana
+      shell: |
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/grafana.yaml
+
+    - name: Install Kiali
+      shell: |
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/kiali.yaml
+
+    - name: Install Jaeger
+      shell: |
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/jaeger.yaml
