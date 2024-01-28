@@ -139,3 +139,24 @@ istio-system   service/tracing                                   ClusterIP      
 istio-system   service/zipkin                                    ClusterIP      172.20.105.80    <none>                                                                       9411/TCP                                                                     10m
 kube-system    service/kube-dns                                  ClusterIP      172.20.0.10      <none>                                                                       53/UDP,53/TCP                                                                67m
 ```
+
+
+Access ArgoCD's web interface: `kubectl port-forward svc/argocd-server -n argocd 8080:443`
+
+
+
+
+Observability Add-ons
+```
+# Visualize Istio Mesh console using Kiali
+kubectl port-forward svc/kiali 20001:20001 -n istio-system
+
+# Get to the Prometheus UI
+kubectl port-forward svc/prometheus 9090:9090 -n istio-system
+
+# Visualize metrics in using Grafana
+kubectl port-forward svc/grafana 3000:3000 -n istio-system
+
+# Visualize application traces via Jaeger
+kubectl port-forward svc/jaeger 16686:16686 -n istio-system
+```

@@ -12,6 +12,13 @@
     #   shell: |
     #     kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+    # - name: Install Argo CD application
+    #   shell: |
+    #     kubectl apply -n argocd -f argocd-app.yml
+
+
+
+
     - name: Install Istio
       shell: |
         istioctl install -y --set profile=demo
