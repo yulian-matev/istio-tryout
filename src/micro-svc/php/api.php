@@ -1,6 +1,6 @@
 <?php
 
-define("SERVICE_VER",   "1.1");
+define("SERVICE_VER",   "1.1.17");
 
 # Load sequence counter
 $seq_counter = 1;
