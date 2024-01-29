@@ -80,7 +80,7 @@ jobs:
           echo "MY_IMG_TAG=${MY_TAG}" >> $GITHUB_OUTPUT
 
   build-docker-image:
-    needs: [editorconfig,php-check-syntax,calc-docker-image-tag,gitleaks-scan,gitleaks-scan]
+    needs: [editorconfig,php-check-syntax,calc-docker-image-tag,gitleaks-scan,sonarcloud]
     runs-on: ubuntu-latest
     steps:
       # - uses: actions/checkout@v4
