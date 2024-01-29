@@ -38,7 +38,5 @@ apcu_store('seq_counter', $seq_counter);
 $output = json_encode($arr, JSON_PRETTY_PRINT);
 echo $output;
 
-if(!defined('STDOUT')) define('STDOUT', fopen('php://stdout', 'wb'));
-fwrite(STDOUT, $output);
 ?>
 
