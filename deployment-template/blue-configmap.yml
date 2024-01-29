@@ -6,3 +6,4 @@ immutable: false    # optional, if set to true then data cannot be changed later
 data:
   microservice.name: "blue"                                     # key-value 1
   microservice.version.long: "__TAG__"                          # key-value 2
+  microservice.release.date: "__SOFTWARE_RELEASE_DATE__"

@@ -40,6 +40,11 @@ spec:
               configMapKeyRef:
                 name: devops-blue-configmap
                 key: microservice.version.long
+          - name: SERVICE_RELEASE_DATE
+            valueFrom:
+              configMapKeyRef:
+                name: devops-blue-configmap
+                key: microservice.release.date
         resources:
           limits:
             cpu: "0.5"
