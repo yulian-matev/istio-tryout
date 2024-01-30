@@ -190,7 +190,7 @@ jobs:
           #   -e program        one line of program
           perl -pi -e 's/__TAG__/$ENV{IMG_TAG}/g' *.yml
 
-          CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
+          export CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
           perl -pi -e 's/__SOFTWARE_RELEASE_DATE__/$ENV{CURRENT_DATE}/g' *.yml
 
           git add *.yml
